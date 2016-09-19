@@ -8,7 +8,8 @@
 using namespace std;
 
 //Remove this later.
-void print(vector<int> s)
+template <typename T>
+void print(vector<T> s)
 {
 	for(auto i : s)
 	{
@@ -21,8 +22,8 @@ CombinedRanker::CombinedRanker(std::vector<std::vector<int>> _sources)
 {
 	sources = _sources;
 	source_weights = vector<double>(sources.size());
-	fill(source_weights.begin(), source_weights.end(), 1);
-	rank_sums = vector<int>(sources.front().size());
+	fill(source_weights.begin(), source_weights.end(), 1.0);
+	rank_sums = vector<double>(sources.front().size());
 
 	sum_sources();
 	sort_sources();
@@ -30,10 +31,12 @@ CombinedRanker::CombinedRanker(std::vector<std::vector<int>> _sources)
 	sum_sources();
 
 	//Remove this later.
-	for (auto source : sources)
+	/*for (auto source : sources)
 	{
 		print(source);
-	}
+	}*/
+
+	print(rank_sums);
 }
 
 //This function sums all sources and populates the rank_sums vector.
@@ -95,24 +98,26 @@ void CombinedRanker::derive_weights()
 	auto reliability = derive_reliability(inversions);
 
 	int count = sources.size();
-	int sum = 0;
-	for (auto i : reliability)
+	double sum = 0;
+	for (double i : reliability)
 		sum += i;
 
 	int i = 0;
 	for (auto& weight : source_weights)
 	{
 		weight = reliability[i] / sum * count;
+		i++;
 	}
 }
 
-std::vector<double> CombinedRanker::derive_reliability(std::vector<int> inversions)
+//This function returns a vector with the reliabilty of each source based on a vector of inversions passed into it.
+std::vector<double> CombinedRanker::derive_reliability(const std::vector<int> inversions)
 {
 	auto reliability = vector<double>(sources.size());
 	int i = 0;
 	for (auto& rel : reliability)
 	{
-		rel = 1 / (inversions[i] + 1);
+		rel = 1 / ((double)inversions[i] + 1);
 		i++;
 	}
 	return reliability;
@@ -121,9 +126,12 @@ std::vector<double> CombinedRanker::derive_reliability(std::vector<int> inversio
 //This function counts the inversions within a source.
 int CombinedRanker::count_inversions(vector<int> source)
 {
-	return 0;
+	int i = 0;
+	msort_with_inversions(source, i);
+	return i;
 }
 
+//This function cycles through the sources and returns a vector with each sources inversion count.
 std::vector<int> CombinedRanker::get_inversions()
 {
 	auto source_inversions = vector<int>(sources.size());
@@ -136,6 +144,56 @@ std::vector<int> CombinedRanker::get_inversions()
 	return source_inversions;
 }
 
+//This function uses merge sort to count inversions.
+vector<int> CombinedRanker::msort_with_inversions(vector<int> source, int& inversions)
+{
+	if (source.size() == 1)
+		return source;
+
+	int half = source.size() / 2;
+	auto left = vector<int>(source.begin(), source.begin() + half);
+	auto right = vector<int>(source.begin() + half, source.end());
+
+	left = msort_with_inversions(left, inversions);
+	right = msort_with_inversions(right, inversions);
+
+	return merge_with_inversions(left, right, inversions);
+}
+//This function counts the number of inversions with each merge.
+vector<int> CombinedRanker::merge_with_inversions(vector<int> left, vector<int> right, int& inversions)
+{
+	auto result = vector<int>();
+
+	while (left.size() || right.size())
+	{
+		if (right.size() && left.size())
+		{
+			if (left.front() > right.front())
+			{
+				inversions++;
+				result.push_back(right.front());
+				right.erase(right.begin());
+			}
+			else
+			{
+				result.push_back(left.front());
+				left.erase(left.begin());
+			}
+		}
+		else if (right.size())
+		{
+			result.push_back(right.front());
+			right.erase(right.begin());
+		}
+		else
+		{
+			result.push_back(left.front());
+			left.erase(left.begin());
+		}
+	}
+
+	return result;
+}
 
 CombinedRanker::~CombinedRanker()
 {

@@ -6,11 +6,15 @@ using namespace std;
 
 
 void main() {
-	static const int arr[] = {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
-	auto numbers = vector<int>(arr, arr + sizeof(arr) / sizeof(arr[0]));
+	vector<int> arr {1, 2, 4, 3, 6, 5};
+	vector<int> brr { 2, 4, 1, 3, 5, 6 };
+	vector<int> crr { 1, 2, 3, 4, 5, 6 };
 
 	auto sources = vector<vector<int>>();
-	sources.push_back(numbers);
+
+	sources.push_back(arr);
+	sources.push_back(brr);
+	sources.push_back(crr);
 
 	auto cb = CombinedRanker(sources);
 
