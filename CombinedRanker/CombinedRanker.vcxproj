@@ -41,7 +41,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -151,6 +151,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CombinedRanker.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="source1.txt" />
+    <Text Include="source2.txt" />
+    <Text Include="source3.txt" />
+    <Text Include="source4.txt" />
+    <Text Include="source5.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

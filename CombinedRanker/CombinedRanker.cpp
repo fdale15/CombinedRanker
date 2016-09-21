@@ -85,8 +85,7 @@ std::vector<size_t> CombinedRanker::sort_indexes(const std::vector<T>& v)
 	iota(idx.begin(), idx.end(), 0);
 
 	// sort indexes based on comparing values in v
-	sort(idx.begin(), idx.end(),
-		[&v](size_t i1, size_t i2) {return v[i1] < v[i2]; });
+	sort(idx.begin(), idx.end(), [&v](size_t i1, size_t i2) {return v[i1] < v[i2]; });
 
 	return idx;
 }
@@ -145,7 +144,7 @@ std::vector<int> CombinedRanker::get_inversions()
 }
 
 //This function uses merge sort to count inversions.
-vector<int> CombinedRanker::msort_with_inversions(vector<int> source, int& inversions)
+std::vector<int> CombinedRanker::msort_with_inversions(vector<int> source, int& inversions)
 {
 	if (source.size() == 1)
 		return source;
@@ -159,8 +158,9 @@ vector<int> CombinedRanker::msort_with_inversions(vector<int> source, int& inver
 
 	return merge_with_inversions(left, right, inversions);
 }
+
 //This function counts the number of inversions with each merge.
-vector<int> CombinedRanker::merge_with_inversions(vector<int> left, vector<int> right, int& inversions)
+std::vector<int> CombinedRanker::merge_with_inversions(vector<int> left, vector<int> right, int& inversions)
 {
 	auto result = vector<int>();
 
@@ -193,6 +193,53 @@ vector<int> CombinedRanker::merge_with_inversions(vector<int> left, vector<int> 
 	}
 
 	return result;
+}
+
+//This function uses quick sort to count inversions.
+std::vector<int> CombinedRanker::qsort_with_inversions(vector<int> source)
+{
+	if (source.size() <= 1)
+		return source;
+
+	std::vector<int> equal, less, greater;
+
+	// select a pivot, based on median of three
+	int pivot;
+
+	if (source[0] < source[source.size() - 1])
+	{
+		if (source[0] < source[(source.size() - 1) / 2])
+			pivot = source[(source.size() - 1) / 2];
+		else
+			pivot = source[0];
+	}
+	else
+	{
+		if (source[source.size() - 1] < source[(source.size() - 1) / 2])
+			pivot = source[(source.size() - 1) / 2];
+		else
+			pivot = source[source.size() - 1];
+	}
+
+	// compare to the pivot and sort appropriately
+	for (int i = 0; i < source.size(); i++)
+	{
+		if (source[i] < pivot)
+			less.push_back(source[i]);
+		else if (source[i] > pivot)
+			greater.push_back(source[i]);
+		else
+			equal.push_back(source[i]);
+	}
+
+	// return w/ concatenation & recursion
+	std::vector<int> greater_sorted = qsort_with_inversions(greater);
+	std::vector<int> less_sorted = qsort_with_inversions(less);
+
+	equal.insert(equal.end(), greater_sorted.begin(), greater_sorted.end());
+	less_sorted.insert(less_sorted.end(), equal.begin(), equal.end());
+
+	return less_sorted;
 }
 
 CombinedRanker::~CombinedRanker()
