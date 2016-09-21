@@ -17,6 +17,8 @@ class CombinedRanker
 	std::vector<double> derive_reliability(std::vector<int> inversions);
 	//This function counts the inversions within a source.
     int count_inversions(std::vector<int> source);
+	// This function uses quick sort to count inversions.
+	std::vector<int> qsort_with_inversions(std::vector<int> source);
 	//This function uses merge sort to count inversions.
 	std::vector<int> msort_with_inversions(std::vector<int> source, int& inversions);
 	//This function counts the number of inversions with each merge.
@@ -31,5 +33,7 @@ class CombinedRanker
 public:
 	CombinedRanker(std::vector<std::vector<int>> _sources);
 	~CombinedRanker();
+
+	std::vector<std::vector<int>> getSources() { return sources; }
 };
 

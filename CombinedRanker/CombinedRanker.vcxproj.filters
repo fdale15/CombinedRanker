@@ -27,4 +27,11 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="source1.txt" />
+    <Text Include="source2.txt" />
+    <Text Include="source3.txt" />
+    <Text Include="source4.txt" />
+    <Text Include="source5.txt" />
+  </ItemGroup>
 </Project>
