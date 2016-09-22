@@ -33,24 +33,24 @@ vector<vector<int>> read_data() {
 	}
 
 	return sources;
+}\
+
+//prints data from a vector
+template<typename T>
+void print(vector<T> source)
+{
+	for (auto s : source)
+	{
+		cout << s << endl;
+	}
 }
 
 void main() {
 	
-	//vector<int> arr {1, 2, 4, 3, 6, 5}; //2
-	//vector<int> brr { 2, 4, 1, 3, 5, 6 }; //3
-	//vector<int> crr { 4, 2, 5, 3, 1 };//7
-
-	//auto sources = vector<vector<int>>();
-	//
-	//sources.push_back(arr);
-	//sources.push_back(brr);
-	//sources.push_back(crr);
-
-
-
 	auto sources = read_data();
 	auto cb = CombinedRanker(sources);
+
+	print(cb.getCombinedRank());
 
 	int i;
 	cin >> i;
