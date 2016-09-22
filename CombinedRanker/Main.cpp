@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include "CombinedRanker.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -13,7 +14,7 @@ vector<vector<int>> read_data() {
 	for (int i = 0; i < 5; i++) {
 		auto source = vector<int>();
 		// remove "debug sources/" from filename later
-		string filename = "debug sources/source" + to_string(i + 1) + ".txt";
+		string filename = "source" + to_string(i + 1) + ".txt";
 		ifstream fin(filename);
 
 		if (fin.is_open()) {
@@ -35,20 +36,20 @@ vector<vector<int>> read_data() {
 }
 
 void main() {
-	/*
-	vector<int> arr {1, 2, 4, 3, 6, 5};
-	vector<int> brr { 2, 4, 1, 3, 5, 6 };
-	vector<int> crr { 1, 2, 3, 4, 5, 6 };
-
-	auto sources = vector<vector<int>>();
 	
-	sources.push_back(arr);
-	sources.push_back(brr);
-	sources.push_back(crr);
-	*/
+	//vector<int> arr {1, 2, 4, 3, 6, 5}; //2
+	//vector<int> brr { 2, 4, 1, 3, 5, 6 }; //3
+	//vector<int> crr { 4, 2, 5, 3, 1 };//7
+
+	//auto sources = vector<vector<int>>();
+	//
+	//sources.push_back(arr);
+	//sources.push_back(brr);
+	//sources.push_back(crr);
+
+
 
 	auto sources = read_data();
-
 	auto cb = CombinedRanker(sources);
 
 	int i;

@@ -36,7 +36,18 @@ CombinedRanker::CombinedRanker(std::vector<std::vector<int>> _sources)
 		print(source);
 	}*/
 
-	print(rank_sums);
+	for (auto s : sources)
+	{
+		int inversions = 0;
+		msort_with_inversions(s, inversions);
+		cout << "MS:\t" << inversions << endl;
+		inversions = 0;
+		qsort_with_inversions(s, inversions);
+		cout << "QS:\t" << inversions << endl;
+		cout << endl;
+	}
+
+	//print(rank_sums);
 }
 
 //This function sums all sources and populates the rank_sums vector.
@@ -170,7 +181,8 @@ std::vector<int> CombinedRanker::merge_with_inversions(vector<int> left, vector<
 		{
 			if (left.front() > right.front())
 			{
-				inversions++;
+				//If the right is greater, all the numbers in the left count as an inversion.
+				inversions += left.size();
 				result.push_back(right.front());
 				right.erase(right.begin());
 			}
@@ -196,45 +208,38 @@ std::vector<int> CombinedRanker::merge_with_inversions(vector<int> left, vector<
 }
 
 //This function uses quick sort to count inversions.
-std::vector<int> CombinedRanker::qsort_with_inversions(vector<int> source)
+std::vector<int> CombinedRanker::qsort_with_inversions(vector<int> source, int& inversions)
 {
 	if (source.size() <= 1)
 		return source;
 
 	std::vector<int> equal, less, greater;
 
-	// select a pivot, based on median of three
-	int pivot;
-
-	if (source[0] < source[source.size() - 1])
-	{
-		if (source[0] < source[(source.size() - 1) / 2])
-			pivot = source[(source.size() - 1) / 2];
-		else
-			pivot = source[0];
-	}
-	else
-	{
-		if (source[source.size() - 1] < source[(source.size() - 1) / 2])
-			pivot = source[(source.size() - 1) / 2];
-		else
-			pivot = source[source.size() - 1];
-	}
+	// select a pivot as the first int.
+	int pivot = source[0];
 
 	// compare to the pivot and sort appropriately
 	for (int i = 0; i < source.size(); i++)
 	{
 		if (source[i] < pivot)
+		{
 			less.push_back(source[i]);
+			//The numbers in the equal and greater vectors count as an inversion.
+			inversions += equal.size() + greater.size();
+		}
 		else if (source[i] > pivot)
 			greater.push_back(source[i]);
 		else
+		{
 			equal.push_back(source[i]);
+			//The numbers in the greater vector count as an inversion.
+			inversions += greater.size();
+		}
 	}
 
 	// return w/ concatenation & recursion
-	std::vector<int> greater_sorted = qsort_with_inversions(greater);
-	std::vector<int> less_sorted = qsort_with_inversions(less);
+	std::vector<int> greater_sorted = qsort_with_inversions(greater, inversions);
+	std::vector<int> less_sorted = qsort_with_inversions(less, inversions);
 
 	equal.insert(equal.end(), greater_sorted.begin(), greater_sorted.end());
 	less_sorted.insert(less_sorted.end(), equal.begin(), equal.end());
