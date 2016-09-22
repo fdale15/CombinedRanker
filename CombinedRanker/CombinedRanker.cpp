@@ -44,6 +44,9 @@ CombinedRanker::CombinedRanker(std::vector<std::vector<int>> _sources)
 		inversions = 0;
 		qsort_with_inversions(s, inversions);
 		cout << "QS:\t" << inversions << endl;
+		inversions = 0;
+		bubble_sort_with_inversions(s, inversions);
+		cout << "BS:\t" << inversions << endl;
 		cout << endl;
 	}
 
@@ -245,6 +248,30 @@ std::vector<int> CombinedRanker::qsort_with_inversions(vector<int> source, int& 
 	less_sorted.insert(less_sorted.end(), equal.begin(), equal.end());
 
 	return less_sorted;
+}
+
+//bubble sort algorithm that counts inversions 
+std::vector<int> CombinedRanker::bubble_sort_with_inversions(std::vector<int> source, int& inversions)
+{
+	int x = 0;
+	int n = -1;
+	while (n != 0)
+	{
+		x = 0;
+		for (int i = 0; i < source.size() - 1; i++)
+		{
+			if (source[i] > source[i + 1])
+			{
+				int temp = source[i];
+				source[i] = source[i + 1];
+				source[i + 1] = temp;
+				inversions++;   //counter when every swap happens, hence counting inversions 
+				x = i;
+			}
+		}
+		n = x;
+	}
+	return source;
 }
 
 CombinedRanker::~CombinedRanker()

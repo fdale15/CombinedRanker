@@ -23,6 +23,8 @@ class CombinedRanker
 	std::vector<int> msort_with_inversions(std::vector<int> source, int& inversions);
 	//This function counts the number of inversions with each merge.
 	std::vector<int> merge_with_inversions(std::vector<int> left, std::vector<int> right, int& inversions);
+	//bubble sort algorithm that counts inversions 
+	std::vector<int> bubble_sort_with_inversions(std::vector<int> source, int& inversions);
 	//This functions returns a vector of inversions from the sources.
 	std::vector<int> get_inversions();
 
