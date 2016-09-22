@@ -3,8 +3,11 @@
 
 class CombinedRanker
 {
+	//The sources of each list of rankings.
 	std::vector<std::vector<int>> sources;
+	//The weights of each source.
 	std::vector<double> source_weights;
+	//Contains the combined rank from the sources.
 	std::vector<double> rank_sums;
 
 	//This function sums all sources and populates the rank_sums vector.
@@ -37,5 +40,6 @@ public:
 	~CombinedRanker();
 
 	std::vector<std::vector<int>> getSources() { return sources; }
+	std::vector<double> getCombinedRank() { return rank_sums; }
 };
 

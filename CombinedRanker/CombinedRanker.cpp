@@ -7,17 +7,6 @@
 
 using namespace std;
 
-//Remove this later.
-template <typename T>
-void print(vector<T> s)
-{
-	for(auto i : s)
-	{
-		cout << i << endl;
-	}
-	cout << "\n\n\n";
-}
-
 CombinedRanker::CombinedRanker(std::vector<std::vector<int>> _sources)
 {
 	sources = _sources;
@@ -29,28 +18,6 @@ CombinedRanker::CombinedRanker(std::vector<std::vector<int>> _sources)
 	sort_sources();
 	derive_weights();
 	sum_sources();
-
-	//Remove this later.
-	/*for (auto source : sources)
-	{
-		print(source);
-	}*/
-
-	for (auto s : sources)
-	{
-		int inversions = 0;
-		msort_with_inversions(s, inversions);
-		cout << "MS:\t" << inversions << endl;
-		inversions = 0;
-		qsort_with_inversions(s, inversions);
-		cout << "QS:\t" << inversions << endl;
-		inversions = 0;
-		bubble_sort_with_inversions(s, inversions);
-		cout << "BS:\t" << inversions << endl;
-		cout << endl;
-	}
-
-	//print(rank_sums);
 }
 
 //This function sums all sources and populates the rank_sums vector.
