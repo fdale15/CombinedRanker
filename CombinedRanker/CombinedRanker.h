@@ -18,7 +18,7 @@ class CombinedRanker
 	//This function counts the inversions within a source.
     int count_inversions(std::vector<int> source);
 	// This function uses quick sort to count inversions.
-	std::vector<int> qsort_with_inversions(std::vector<int> source);
+	std::vector<int> qsort_with_inversions(std::vector<int> source, int & inversions);
 	//This function uses merge sort to count inversions.
 	std::vector<int> msort_with_inversions(std::vector<int> source, int& inversions);
 	//This function counts the number of inversions with each merge.
